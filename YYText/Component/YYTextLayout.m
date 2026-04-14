@@ -1504,18 +1504,28 @@ fail:
     }
     
     [self _insideComposedCharacterSequences:line position:position block: ^(CGFloat left, CGFloat right, NSUInteger prev, NSUInteger next) {
+        CGFloat threshold = right ? prev : next;
         if (isVertical) {
-            position = fabs(left - point.y) < fabs(right - point.y) < (right ? prev : next);
+            CGFloat dyLeft = fabs(left - point.y);
+            CGFloat dyRight = fabs(right - point.y);
+            position = (dyLeft < dyRight) && (dyRight < threshold);
         } else {
-            position = fabs(left - point.x) < fabs(right - point.x) < (right ? prev : next);
+            CGFloat dxLeft = fabs(left - point.x);
+            CGFloat dxRight = fabs(right - point.x);
+            position = (dxLeft < dxRight) && (dxRight < threshold);
         }
     }];
-    
+
     [self _insideEmoji:line position:position block: ^(CGFloat left, CGFloat right, NSUInteger prev, NSUInteger next) {
+        CGFloat threshold = right ? prev : next;
         if (isVertical) {
-            position = fabs(left - point.y) < fabs(right - point.y) < (right ? prev : next);
+            CGFloat dyLeft = fabs(left - point.y);
+            CGFloat dyRight = fabs(right - point.y);
+            position = (dyLeft < dyRight) && (dyRight < threshold);
         } else {
-            position = fabs(left - point.x) < fabs(right - point.x) < (right ? prev : next);
+            CGFloat dxLeft = fabs(left - point.x);
+            CGFloat dxRight = fabs(right - point.x);
+            position = (dxLeft < dxRight) && (dxRight < threshold);
         }
     }];
     
